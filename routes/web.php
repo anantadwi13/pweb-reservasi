@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,3 +16,4 @@
 Route::get('/', function () {
     return view('welcome');
 });
+//tes
