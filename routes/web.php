@@ -13,7 +13,8 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-//tes
+Route::get('/', 'PagesController@index');
+Route::get('/jadwal', 'PagesController@jadwal');
+Route::get('/about', 'PagesController@about');
+Route::get('/login', 'PagesController@login');
+Route::get('/register', 'PagesController@register');
