@@ -35,5 +35,7 @@ Route::group(['prefix'=>'dashboard'], function (){
     Route::resource('report','ReportController');
     Route::post('reservasi/action/{reservasi}','ReservasiController@action')->name('reservasi.action');
     Route::post('user/activate/{user}','UserController@activate')->name('user.activate');
+    Route::get('gantipassword','UserController@gantiPassword')->name('user.gantipass');
+    Route::post('gantipassword','UserController@gantiPasswordAct')->name('user.gantipass.act');
 });
 

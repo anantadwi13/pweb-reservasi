@@ -7,13 +7,15 @@ use App\KotaKab;
 use App\Provinsi;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('admin.only')->except('show');
+        $this->middleware('auth')->except('show');
+        $this->middleware('admin.only')->except('show','gantiPassword','gantiPasswordAct');
     }
 
     /**
@@ -100,6 +102,33 @@ class UserController extends Controller
 
         $provinsi = Provinsi::all();
         return view('user.edit')->with(compact('user','provinsi','kota','kecamatan','idkota','idprovinsi'));
+    }
+
+    public function gantiPassword(){
+        $user = \Auth::user();
+        return view('user.change_password')->with(compact('user'));
+    }
+
+    public function gantiPasswordAct(Request $request){
+        $user = \Auth::user();
+
+        $this->validate($request, [
+            'oldpassword' => ['required','string','min:6'],
+            'password' => ['required','string', 'min:6', 'confirmed'],
+        ]);
+
+        if (!Hash::check($request->input('oldpassword'),$user->password))
+            return redirect()->back()->withErrors(['Password lama tidak cocok!']);
+
+        $user->password = bcrypt($request->input('password'));
+
+        try{
+            if ($user->save())
+                return redirect(route('dashboard.index'))->with('success','Password berhasil diganti!');
+            return redirect()->back()->withErrors(['Gagal mengganti password']);
+        }catch (\Exception $exception){
+            return redirect()->back()->withErrors(['Gagal mengganti password']);
+        }
     }
 
     /**

@@ -162,6 +162,9 @@
 
 @section('action')
     <div class="float-sm-right">
+        @if(Auth::check() && $user->id == Auth::user()->id)
+            <a href="{{route('user.gantipass')}}" class="btn btn-primary mr-2">Ganti Password</a>
+        @endif
         <a onclick="window.history.go(-1); return false;" href="#" class="btn btn-secondary">Back</a>
     </div>
 @endsection
