@@ -75,12 +75,10 @@ class UserController extends Controller
 
         if (empty($user) || !$user->exists)
             return redirect()->back()->withErrors(['User tidak ditemukan!']);
-        if (!\Auth::check())
-            abort(404);
-        if (\Auth::user()->tipe_akun == User::TYPE_PEMINJAM && $user->tipe_akun == User::TYPE_PEMINJAM && $user->id != \Auth::user()->id)
-            abort(404);
-        if ($user->tipe_akun==User::TYPE_ADMIN)
-            abort(404);
+        if ($user->tipe_akun == User::TYPE_PEMINJAM && (\Auth::guest() || !(\Auth::user()->tipe_akun == User::TYPE_PENYEDIA || \Auth::user()->tipe_akun == User::TYPE_ADMIN || \Auth::user()->id == $user->id)))
+            return redirect()->back()->withErrors(['Unauthorized page!']);
+        if ($user->tipe_akun==User::TYPE_ADMIN && (\Auth::guest() || \Auth::user()->tipe_akun != User::TYPE_ADMIN))
+            return redirect()->back()->withErrors(['Unauthorized page!']);
 
         return view('user.show')->with(compact('user'));
     }

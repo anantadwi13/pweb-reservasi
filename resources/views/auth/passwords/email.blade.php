@@ -1,4 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.dashboard')
+
+@section('title','Lupa Password')
 
 @section('content')
 <div class="container">

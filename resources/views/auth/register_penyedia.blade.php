@@ -2,6 +2,12 @@
 
 @section('title','Registrasi Penyedia Ruangan')
 
+@section('action')
+    <div class="float-sm-right">
+        <a onclick="window.history.go(-1); return false;" href="#" class="btn btn-secondary">Back</a>
+    </div>
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
