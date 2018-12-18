@@ -9,6 +9,13 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use Notifiable;
+    const TYPE_PEMINJAM = 1;
+    const TYPE_PENYEDIA = 2;
+    const TYPE_ADMIN = 99;
+
+    const STATUS_ACTIVE = 2;
+    const STATUS_NONACTIVE = 1;
+    const STATUS_BANNED = 0;
 
     /**
      * The attributes that are mass assignable.
@@ -16,7 +23,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'nama', 'username', 'email', 'no_identitas','tipe_akun','nohp','alamat_jalan','alamat_kecamatan','password','status',
     ];
 
     /**
@@ -27,4 +34,24 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function ruangan(){
+        return $this->hasMany('App\Ruangan', 'id_user', 'id');
+    }
+
+    public function reservasi(){
+        return $this->hasMany('App\Reservasi', 'id_user', 'id');
+    }
+
+    public function report(){
+        return $this->hasMany('App\Report', 'id_pelapor', 'id');
+    }
+
+    public function reported(){
+        return $this->hasMany('App\Report', 'id_dilapor', 'id');
+    }
+
+    public function kecamatan(){
+        return $this->belongsTo('App\Kecamatan', 'alamat_kecamatan','id');
+    }
 }
