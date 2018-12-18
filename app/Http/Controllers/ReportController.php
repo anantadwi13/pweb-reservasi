@@ -10,6 +10,7 @@ class ReportController extends Controller
 {
     public function __construct()
     {
+        $this->middleware('auth');
         $this->middleware('admin.only')->except(['create','store']);
     }
 
@@ -50,6 +51,18 @@ class ReportController extends Controller
             'subject' => ['required','string', 'max:30'],
             'isi' => ['required','string'],
         ]);
+
+        $user = User::whereUsername($username)->first();
+
+        if (empty($user) || !$user->exists)
+            return redirect()->back()->withErrors(['User tidak ditemukan!']);
+        if (\Auth::user()->tipe_akun == $user->tipe_akun)
+            return redirect(route('dashboard.index'))->withErrors(['Unauthorized page!']);
+        if ($user->id == \Auth::user()->id)
+            return redirect(route('dashboard.index'))->withErrors(['Unauthorized page!']);
+        if ($user->tipe_akun == User::TYPE_ADMIN)
+            return redirect(route('dashboard.index'))->withErrors(['Unauthorized page!']);
+
         $user = User::whereUsername($username)->first();
         $report = new Report();
         $report->id_pelapor = \Auth::user()->id;
@@ -57,8 +70,14 @@ class ReportController extends Controller
         $report->subject = $request->subject;
         $report->isi = $request->isi;
         $report->status = Report::STATUS_UNREAD;
-        $report->save();
-        return redirect(route('reservasi.index'));
+        try {
+            if($report->save())
+                return redirect(route('dashboard.index'))->with('success','Berhasil melapor '. $user->nama);
+            return redirect()->back()->withErrors(['Gagal mengirim report!']);
+        }
+        catch (\Exception $exception){
+            return redirect()->back()->withErrors(['Gagal mengirim report!']);
+        }
     }
 
     /**

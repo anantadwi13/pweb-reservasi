@@ -57,7 +57,7 @@
 
 @section('action')
     <div class="float-sm-right">
-            <a href="{{route('ruangan.index')}}" class="btn btn-secondary">Back</a>
+            <a onclick="window.history.go(-1); return false;" href="#" class="btn btn-secondary">Back</a>
     </div>
 @endsection
 

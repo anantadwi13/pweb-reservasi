@@ -1,5 +1,5 @@
 @extends("layouts.dashboard")
-
+ 
 @php
     /** @var \App\User $user */
 @endphp
@@ -29,7 +29,7 @@
         <div class="offset-lg-2 offset-2 col-lg-8 col-8">
             <div class="card card-primary">
                 <div class="card-header">
-                <h3 class="card-title">Lapor {{$user->nama}}</h3>
+                    <h3 class="card-title">Lapor {{$user->nama}}</h3>
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
@@ -42,7 +42,7 @@
 
                             <div class="col-md-6">
                                 <input id="subject" type="text" class="form-control{{ $errors->has('subject') ? ' is-invalid' : '' }}" name="subject">
-                            
+
                                 @if ($errors->has('subject'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('subject') }}</strong>
@@ -104,4 +104,4 @@
             return true;
         });
     </script>
-@endsection
+@endsection 
