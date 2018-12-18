@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Report;
-use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
@@ -32,18 +32,26 @@ class ReportController extends Controller
      */
     public function create($username)
     {
-        // return $username;
         $user = User::whereUsername($username)->first();
-        if($user->id == \Auth::user()->id)
-            return redirect()->back()->withErrors(['Unauthorized page!']);
+
+        if (empty($user) || !$user->exists)
+            return redirect()->back()->withErrors(['User tidak ditemukan!']);
+        if (\Auth::user()->tipe_akun == $user->tipe_akun)
+            return redirect(route('dashboard.index'))->withErrors(['Unauthorized page!']);
+        if ($user->id == \Auth::user()->id)
+            return redirect(route('dashboard.index'))->withErrors(['Unauthorized page!']);
+        if ($user->tipe_akun == User::TYPE_ADMIN)
+            return redirect(route('dashboard.index'))->withErrors(['Unauthorized page!']);
+
         return view('report.create')->with(compact('user'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store($username, Request $request)
     {
@@ -64,6 +72,18 @@ class ReportController extends Controller
             return redirect(route('dashboard.index'))->withErrors(['Unauthorized page!']);
 
         $user = User::whereUsername($username)->first();
+
+
+        if (empty($user) || !$user->exists)
+            return redirect()->back()->withErrors(['User tidak ditemukan!']);
+        if (\Auth::user()->tipe_akun == $user->tipe_akun)
+            return redirect(route('dashboard.index'))->withErrors(['Unauthorized page!']);
+        if ($user->id == \Auth::user()->id)
+            return redirect(route('dashboard.index'))->withErrors(['Unauthorized page!']);
+        if ($user->tipe_akun == User::TYPE_ADMIN)
+            return redirect(route('dashboard.index'))->withErrors(['Unauthorized page!']);
+
+
         $report = new Report();
         $report->id_pelapor = \Auth::user()->id;
         $report->id_dilapor = $user->id;

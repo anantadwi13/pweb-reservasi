@@ -126,8 +126,7 @@ class ReservasiController extends Controller
      */
     public function show(Reservasi $reservasi)
     {
-        $user = \Auth::user();
-        return view('reservasi.show')->with(compact('reservasi','user'));
+        return view('reservasi.show')->with(compact('reservasi'));
     }
 
     /**

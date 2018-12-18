@@ -109,8 +109,8 @@ class RuanganController extends Controller
     {
         if (empty($ruangan) || !$ruangan->exists)
             return redirect()->back()->withErrors(['Ruangan tidak ditemukan!']);
-        $user = \Auth::user();
-        return view('ruangan.show')->with(compact('ruangan','user'));
+
+        return view('ruangan.show')->with(compact('ruangan'));
     }
 
     /**

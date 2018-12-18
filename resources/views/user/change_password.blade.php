@@ -76,7 +76,7 @@
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">Ganti</button>
-                                <a href="{{route('user.show',\Auth::user()->username)}}" class="btn btn-secondary">Cancel</a>
+                                <a href="{{route('dashboard.index')}}" class="btn btn-secondary">Cancel</a>
                             </div>
                         </div>
                     </div>

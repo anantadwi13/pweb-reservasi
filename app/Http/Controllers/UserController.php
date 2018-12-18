@@ -26,7 +26,6 @@ class UserController extends Controller
     public function index()
     {
         $dataUser = User::all();
-        // $dataUser = User::where('tipe_akun','<>',User::TYPE_ADMIN)->get();
         return view('user.index')->with(compact('dataUser'));
     }
 
@@ -188,6 +187,7 @@ class UserController extends Controller
     {
         if ($user->tipe_akun == User::TYPE_ADMIN)
             return redirect(route('user.index'))->with('User tidak bisa dihapus/banned');
+
         $user->status = User::STATUS_BANNED;
 
         try{
