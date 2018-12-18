@@ -8,6 +8,9 @@ class Report extends Model
 {
     protected $table = "report";
 
+    const STATUS_UNREAD = 0;
+    const STATUS_READ = 1;
+
     public function pelapor(){
         return $this->belongsTo('App\User','id_pelapor','id');
     }

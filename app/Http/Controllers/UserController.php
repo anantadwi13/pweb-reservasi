@@ -185,6 +185,9 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        if ($user->tipe_akun == User::TYPE_ADMIN)
+            return redirect(route('user.index'))->with('User tidak bisa dihapus/banned');
+
         $user->status = User::STATUS_BANNED;
 
         try{

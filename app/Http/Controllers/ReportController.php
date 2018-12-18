@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Report;
+use App\User;
 use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
     public function __construct()
     {
+        $this->middleware('auth');
         $this->middleware('admin.only')->except(['create','store']);
     }
 
@@ -19,7 +21,8 @@ class ReportController extends Controller
      */
     public function index()
     {
-        //
+        $report = Report::all();
+        return view('report.index')->with(compact('report'));
     }
 
     /**
@@ -27,20 +30,62 @@ class ReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($username)
     {
-        //
+        $user = User::whereUsername($username)->first();
+
+        if (empty($user) || !$user->exists)
+            return redirect()->back()->withErrors(['User tidak ditemukan!']);
+        if (\Auth::user()->tipe_akun == $user->tipe_akun)
+            return redirect(route('dashboard.index'))->withErrors(['Unauthorized page!']);
+        if ($user->id == \Auth::user()->id)
+            return redirect(route('dashboard.index'))->withErrors(['Unauthorized page!']);
+        if ($user->tipe_akun == User::TYPE_ADMIN)
+            return redirect(route('dashboard.index'))->withErrors(['Unauthorized page!']);
+
+        return view('report.create')->with(compact('user'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request)
+    public function store($username, Request $request)
     {
-        //
+        $this->validate($request, [
+            'subject' => ['required','string', 'max:30'],
+            'isi' => ['required','string'],
+        ]);
+        $user = User::whereUsername($username)->first();
+
+
+        if (empty($user) || !$user->exists)
+            return redirect()->back()->withErrors(['User tidak ditemukan!']);
+        if (\Auth::user()->tipe_akun == $user->tipe_akun)
+            return redirect(route('dashboard.index'))->withErrors(['Unauthorized page!']);
+        if ($user->id == \Auth::user()->id)
+            return redirect(route('dashboard.index'))->withErrors(['Unauthorized page!']);
+        if ($user->tipe_akun == User::TYPE_ADMIN)
+            return redirect(route('dashboard.index'))->withErrors(['Unauthorized page!']);
+
+
+        $report = new Report();
+        $report->id_pelapor = \Auth::user()->id;
+        $report->id_dilapor = $user->id;
+        $report->subject = $request->subject;
+        $report->isi = $request->isi;
+        $report->status = Report::STATUS_UNREAD;
+        try {
+            if($report->save())
+                return redirect(route('dashboard.index'))->with('success','Berhasil melapor '. $user->nama);
+            return redirect()->back()->withErrors(['Gagal mengirim report!']);
+        }
+        catch (\Exception $exception){
+            return redirect()->back()->withErrors(['Gagal mengirim report!']);
+        }
     }
 
     /**
@@ -51,7 +96,10 @@ class ReportController extends Controller
      */
     public function show(Report $report)
     {
-        //
+        $user = \Auth::user();
+        $report->status = Report::STATUS_READ;
+        $report->update();
+        return view('report.show')->with(compact('report','user'));
     }
 
     /**

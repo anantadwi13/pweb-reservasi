@@ -35,6 +35,9 @@ Route::group(['prefix'=>'dashboard'], function (){
     Route::resource('report','ReportController');
     Route::post('reservasi/action/{reservasi}','ReservasiController@action')->name('reservasi.action');
     Route::post('user/activate/{user}','UserController@activate')->name('user.activate');
+    Route::resource('report','ReportController')->except(['create','store']);
+    Route::get('/user/{user}/report','ReportController@create')->name('report.create');
+    Route::post('/user/{user}/report','ReportController@store')->name('report.store');
     Route::get('gantipassword','UserController@gantiPassword')->name('user.gantipass');
     Route::post('gantipassword','UserController@gantiPasswordAct')->name('user.gantipass.act');
 });

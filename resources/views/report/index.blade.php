@@ -1,10 +1,10 @@
 @extends("layouts.dashboard")
 
 @php
-    /** @var \App\User[] $dataUser */
+    /** @var \App\Reservasi[] $dataReservasi */
 @endphp
 
-@section('title','User')
+@section('title','Report')
 
 @section('content')
     <div class="row">
@@ -33,37 +33,29 @@
                         <thead>
                         <tr>
                             <th>No</th>
-                            <th>Nama</th>
-                            <th>Tipe Akun</th>
+                            <th>User pelapor</th>
+                            <th>User yang dilaporkan</th>
+                            <th>Subject</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($dataUser as $item)
-                            <tr>
+                        @foreach($report as $item)
+                            <tr class="@if($item->status==\App\Report::STATUS_UNREAD) bg-success @endif">
                                 <td></td>
-                                <td>{{$item->nama}}</td>
-                                <td>{{$item->tipe_akun==\App\User::TYPE_ADMIN?"Administrator":($item->tipe_akun==\App\User::TYPE_PENYEDIA?"Penyedia Ruangan":"Peminjam")}}</td>
-                                <td>{{$item->status==\App\User::STATUS_ACTIVE?"Aktif":($item->status==\App\User::STATUS_NONACTIVE?"Non Aktif":"Dihapus/Banned")}}</td>
+                                <td>{{$item->pelapor->nama}}</td>
+                                <td>{{$item->dilapor->nama}}</td>
+                                <td>{{$item->subject}}</td>
                                 <td>
-                                    <a href="{{route('user.show', $item->username)}}" class="btn btn-primary">Detail</a>
-                                    <a href="{{route('user.edit', $item)}}" class="btn btn-warning">Edit</a>
-                                    @if ($item->tipe_akun != \App\User::TYPE_ADMIN)
-                                        @if($item->status == \App\User::STATUS_NONACTIVE)
-                                            <form method="post" action="{{route('user.activate', $item)}}" style="display: inline-block;">
-                                                {{csrf_field()}}
-                                                <button class="btn btn-success">Aktivasi</button>
-                                            </form>
-                                        @endif
-                                        @if($item->status != \App\User::STATUS_BANNED)
-                                            <form method="post" class="delete" action="{{route('user.destroy', $item)}}" style="display: inline-block;">
-                                                {{csrf_field()}}
-                                                <input type="hidden" name="_method" value="DELETE">
-                                                <button class="btn btn-danger">Hapus/Banned</button>
-                                            </form>
-                                        @endif
+                                    @if ($item->status == \App\Report::STATUS_UNREAD)
+                                        Belum dibaca
+                                    @else
+                                        Sudah dibaca
                                     @endif
+                                </td>
+                                <td>
+                                    <a href="{{route('report.show',$item)}}" class="btn btn-primary">Lihat</a>
                                 </td>
                             </tr>
                         @endforeach
@@ -76,11 +68,7 @@
 @endsection
 
 @section('action')
-    @if(Auth::check() && Auth::user()->tipe_akun == \App\User::TYPE_PEMINJAM)
-        <div class="float-sm-right">
-            <a href="{{route('reservasi.create')}}" class="btn btn-primary">Tambah Baru</a>
-        </div>
-    @endif
+
 @endsection
 
 @section('css')
@@ -99,19 +87,13 @@
                     "orderable": false,
                     "targets": 0,
                 } ],
-                "order": [[ 1, 'asc' ]],
+                "order": [[ 4, 'asc' ]],
             });
             t.on( 'order.dt search.dt', function () {
                 t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
                     cell.innerHTML = i+1;
                 } );
             } ).draw();
-        });
-        $('form.delete').submit(function (e) {
-            e.preventDefault();
-
-            if (confirm('Apakah Anda yakin ingin menghapus user ini?'))
-                this.submit();
         });
     </script>
 @endsection
