@@ -49,19 +49,20 @@
                                 <td>
                                     <a href="{{route('user.show', $item->username)}}" class="btn btn-primary">Detail</a>
                                     <a href="{{route('user.edit', $item)}}" class="btn btn-warning">Edit</a>
-
-                                    @if($item->status == \App\User::STATUS_NONACTIVE)
-                                        <form method="post" action="{{route('user.activate', $item)}}" style="display: inline-block;">
-                                            {{csrf_field()}}
-                                            <button class="btn btn-success">Aktivasi</button>
-                                        </form>
-                                    @endif
-                                    @if($item->status != \App\User::STATUS_BANNED)
-                                        <form method="post" class="delete" action="{{route('user.destroy', $item)}}" style="display: inline-block;">
-                                            {{csrf_field()}}
-                                            <input type="hidden" name="_method" value="DELETE">
-                                            <button class="btn btn-danger">Hapus/Banned</button>
-                                        </form>
+                                    @if ($item->tipe_akun != \App\User::TYPE_ADMIN)
+                                        @if($item->status == \App\User::STATUS_NONACTIVE)
+                                            <form method="post" action="{{route('user.activate', $item)}}" style="display: inline-block;">
+                                                {{csrf_field()}}
+                                                <button class="btn btn-success">Aktivasi</button>
+                                            </form>
+                                        @endif
+                                        @if($item->status != \App\User::STATUS_BANNED)
+                                            <form method="post" class="delete" action="{{route('user.destroy', $item)}}" style="display: inline-block;">
+                                                {{csrf_field()}}
+                                                <input type="hidden" name="_method" value="DELETE">
+                                                <button class="btn btn-danger">Hapus/Banned</button>
+                                            </form>
+                                        @endif
                                     @endif
                                 </td>
                             </tr>

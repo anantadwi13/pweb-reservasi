@@ -165,7 +165,10 @@
         @if(Auth::check() && $user->id == Auth::user()->id)
             <a href="{{route('user.gantipass')}}" class="btn btn-primary mr-2">Ganti Password</a>
         @endif
-        <a onclick="window.history.go(-1); return false;" href="#" class="btn btn-secondary">Back</a>
+        @if(Auth::check() && $user->id != Auth::user()->id)
+            <a href="{{route('report.create',$user->username)}}" class="btn btn-danger mr-2">Report</a>
+        @endif
+        <a href="{{route('dashboard.index')}}" class="btn btn-secondary">Back</a>
     </div>
 @endsection
 

@@ -57,10 +57,7 @@
 
 @section('action')
     <div class="float-sm-right">
-        {{-- @if (Auth::check() && $user->id == Auth::user()->id && $user->tipe_akun == 1)
-            <a href="{{route('report.index')}}" class="btn btn-primary mr-2">Report</a>
-        @endif --}}
-        <a onclick="window.history.go(-1); return false;" href="#" class="btn btn-secondary">Back</a>
+            <a href="{{route('ruangan.index')}}" class="btn btn-secondary">Back</a>
     </div>
 @endsection
 

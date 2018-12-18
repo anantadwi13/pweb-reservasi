@@ -49,10 +49,10 @@
 
 @section('action')
     <div class="float-sm-right">
-        @if (Auth::check() && $user->id == Auth::user()->id)
+        {{-- @if (Auth::check() && $user->id == Auth::user()->id)
             <a href="{{route('report.create',$reservasi->user->username)}}" class="btn btn-primary mr-2">Report</a>
-        @endif
-        <a onclick="window.history.go(-1); return false;" href="#" class="btn btn-secondary">Back</a>
+        @endif --}}
+        <a href="{{route('reservasi.index')}}" class="btn btn-secondary">Back</a>
     </div>
 @endsection
 
