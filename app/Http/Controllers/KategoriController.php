@@ -20,7 +20,7 @@ class KategoriController extends Controller
      */
     public function index()
     {
-        if (\Auth::user()->tipe_akun == User::TYPE_PENYEDIA)
+        if (\Auth::check() && \Auth::user()->tipe_akun == User::TYPE_PENYEDIA)
             return redirect(route('dashboard.index'))->withErrors(['Unauthorized page!']);
         $dataKategori = Kategori::all();
         return view('kategori.index')->with(compact('dataKategori'));
@@ -73,7 +73,7 @@ class KategoriController extends Controller
      */
     public function show(Kategori $kategori)
     {
-        if (\Auth::user()->tipe_akun == User::TYPE_PENYEDIA)
+        if (\Auth::check() && \Auth::user()->tipe_akun == User::TYPE_PENYEDIA)
             return redirect(route('dashboard.index'))->withErrors(['Unauthorized page!']);
         return view('kategori.show')->with(compact('kategori'));
     }
