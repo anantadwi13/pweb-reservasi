@@ -32,7 +32,10 @@
                                 <td>{{$item->user->nama}}</td>
                                 <td>{{$item->alamat_jalan?$item->alamat_jalan.", ".ucwords(strtolower($item->kecamatan->nama)).", ".ucwords(strtolower($item->kecamatan->kotakab->nama)).", ".ucwords(strtolower($item->kecamatan->provinsi->nama)) :""}}</td>
                                 <td>
-                                    <a href="{{route('ruangan.show', $item)}}" class="btn btn-warning">Lihat</a>
+                                    <a href="{{route('ruangan.show', $item)}}" class="btn btn-primary">Lihat</a>
+                                    @if(Auth::check() && Auth::user()->tipe_akun == \App\User::TYPE_PEMINJAM && $item->status == \App\Ruangan::STATUS_AVAILABLE)
+                                        <a href="{{route('reservasi.create',['ruangan' => $item->id])}}" class="btn btn-success">Reservasi</a>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

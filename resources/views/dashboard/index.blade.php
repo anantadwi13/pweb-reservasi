@@ -67,22 +67,24 @@
             </div>
         </div>
         @endif
-        @if(Auth::check() && Auth::user()->tipe_akun == \App\User::TYPE_ADMIN)
-            <!-- ./col -->
-            <div class="col-lg-3 col-6">
-                <!-- small box -->
-                <div class="small-box bg-warning">
-                    <div class="inner">
-                        <h3>{{\App\Kategori::count()}}</h3>
+        @if(!(Auth::check() && Auth::user()->tipe_akun == \App\User::TYPE_PENYEDIA))
+        <!-- ./col -->
+        <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-warning">
+                <div class="inner">
+                    <h3>{{\App\Kategori::count()}}</h3>
 
-                        <p>Kategori</p>
-                    </div>
-                    <div class="icon">
-                        <i class="fa fa-star"></i>
-                    </div>
-                    <a href="{{route('kategori.index')}}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    <p>Kategori</p>
                 </div>
+                <div class="icon">
+                    <i class="fa fa-star"></i>
+                </div>
+                <a href="{{route('kategori.index')}}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
             </div>
+        </div>
+        @endif
+        @if(Auth::check() && Auth::user()->tipe_akun == \App\User::TYPE_ADMIN)
             <!-- ./col -->
             <div class="col-lg-3 col-6">
                 <!-- small box -->

@@ -43,13 +43,15 @@
                                 <td></td>
                                 <td>{{$item->nama}}</td>
                                 <td>
+                                <a href="{{route('kategori.show', $item)}}" class="btn btn-primary" title="Lihat daftar ruangan dengan kategori ini">Ruangan</a>
+                                @if(Auth::check() && Auth::user()->tipe_akun == \App\User::TYPE_ADMIN)
                                     <a href="{{route('kategori.edit', $item)}}" class="btn btn-warning">Edit</a>
-                                    <a href="{{route('kategori.show', $item)}}" class="btn btn-primary" title="Lihat daftar ruangan dengan kategori ini">Ruangan</a>
                                     <form method="post" class="delete" action="{{route('kategori.destroy', $item)}}" style="display: inline-block;">
                                         {{csrf_field()}}
                                         <input type="hidden" name="_method" value="DELETE">
                                         <button class="btn btn-danger">Hapus</button>
                                     </form>
+                                @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -62,9 +64,11 @@
 @endsection
 
 @section('action')
+    @if(Auth::check() && Auth::user()->tipe_akun == \App\User::TYPE_ADMIN)
     <div class="float-sm-right">
         <a href="{{route('kategori.create')}}" class="btn btn-primary">Tambah Baru</a>
     </div>
+    @endif
 @endsection
 
 @section('css')
