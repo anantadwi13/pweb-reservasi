@@ -9,7 +9,7 @@ class KategoriController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('admin.only');
+        $this->middleware('admin.only')->except('index','show');
     }
 
     /**

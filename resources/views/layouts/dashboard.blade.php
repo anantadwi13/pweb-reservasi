@@ -92,13 +92,15 @@
                         </a>
                     </li>
                     @endif
-                    @if(Auth::check() && Auth::user()->tipe_akun == \App\User::TYPE_ADMIN)
+                    @if(Auth::check() && (Auth::user()->tipe_akun == \App\User::TYPE_ADMIN || Auth::user()->tipe_akun == \App\User::TYPE_PEMINJAM))
                     <li class="nav-item">
                         <a href="{{route('kategori.index')}}" class="nav-link">
                             <i class="nav-icon fa fa-star"></i>
                             <p>Kategori</p>
                         </a>
                     </li>
+                    @endif
+                    @if(Auth::check() && Auth::user()->tipe_akun == \App\User::TYPE_ADMIN)
                     <li class="nav-item">
                         <a href="{{route('user.index')}}" class="nav-link">
                             <i class="nav-icon fa fa-user"></i>

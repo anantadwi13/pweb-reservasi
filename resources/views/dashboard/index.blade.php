@@ -67,7 +67,7 @@
             </div>
         </div>
         @endif
-        @if(Auth::check() && Auth::user()->tipe_akun == \App\User::TYPE_ADMIN)
+        @if(Auth::check() && (Auth::user()->tipe_akun == \App\User::TYPE_ADMIN || Auth::user()->tipe_akun == \App\User::TYPE_PEMINJAM))
             <!-- ./col -->
             <div class="col-lg-3 col-6">
                 <!-- small box -->
@@ -83,6 +83,8 @@
                     <a href="{{route('kategori.index')}}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
             </div>
+        @endif
+        @if(Auth::check() && Auth::user()->tipe_akun == \App\User::TYPE_ADMIN)
             <!-- ./col -->
             <div class="col-lg-3 col-6">
                 <!-- small box -->
