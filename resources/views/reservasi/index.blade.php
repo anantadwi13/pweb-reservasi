@@ -35,9 +35,10 @@
                             <th>No</th>
                             <th>Ruangan</th>
                             <th>Nama Acara</th>
-                            @if(Auth::check() && Auth::user()->tipe_akun >= \App\User::TYPE_PENYEDIA)
+                            @if(Auth::check() && (Auth::user()->tipe_akun == \App\User::TYPE_PENYEDIA || Auth::user()->tipe_akun == \App\User::TYPE_ADMIN))
                                 <th>Peminjam</th>
-                            @elseif(Auth::check() && Auth::user()->tipe_akun >= \App\User::TYPE_PEMINJAM)
+                            @endif
+                            @if(Auth::check() && (Auth::user()->tipe_akun == \App\User::TYPE_PEMINJAM || Auth::user()->tipe_akun == \App\User::TYPE_ADMIN))
                                 <th>Pemilik Ruangan</th>
                             @endif
                             <th>Status</th>
@@ -50,9 +51,10 @@
                                 <td></td>
                                 <td><a href="{{route('ruangan.show',$item->ruangan)}}">{{$item->ruangan->nama}}</a></td>
                                 <td>{{$item->nama_acara}}</td>
-                                @if(Auth::check() && Auth::user()->tipe_akun >= \App\User::TYPE_PENYEDIA)
+                                @if(Auth::check() && (Auth::user()->tipe_akun == \App\User::TYPE_PENYEDIA || Auth::user()->tipe_akun == \App\User::TYPE_ADMIN))
                                     <td><a href="{{route('user.show',$item->user->username)}}">{{$item->user->nama}}</a></td>
-                                @elseif(Auth::check() && Auth::user()->tipe_akun >= \App\User::TYPE_PEMINJAM)
+                                @endif
+                                @if(Auth::check() && (Auth::user()->tipe_akun == \App\User::TYPE_PEMINJAM  || Auth::user()->tipe_akun == \App\User::TYPE_ADMIN))
                                     <td><a href="{{route('user.show',$item->ruangan->user->username)}}">{{$item->ruangan->user->nama}}</a></td>
                                 @endif
                                 <td>{{$item->status==\App\Reservasi::STATUS_ACCEPTED?"Diterima":($item->status==\App\Reservasi::STATUS_REJECTED?"Ditolak":"Menunggu")}}</td>
