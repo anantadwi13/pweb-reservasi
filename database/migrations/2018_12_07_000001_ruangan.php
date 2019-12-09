@@ -17,10 +17,10 @@ class Ruangan extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('id_user');
             $table->unsignedInteger('id_kategori');
-            $table->string('kode',10);
+            $table->string('kode',10)->nullable();
             $table->string('nama');
-            $table->string('alamat_jalan');
-            $table->unsignedInteger('alamat_kecamatan');
+            $table->string('alamat_jalan')->nullable();
+            $table->unsignedInteger('alamat_kecamatan')->nullable();
             $table->tinyInteger('status');
             $table->timestamps();
             $table->foreign('id_user')->references('id')->on('users');

@@ -18,7 +18,7 @@ class Reservasi extends Migration
             $table->unsignedBigInteger('id_ruangan');
             $table->unsignedBigInteger('id_user');
             $table->string('nama_acara');
-            $table->text('deskripsi_acara');
+            $table->text('deskripsi_acara')->nullable();
             $table->dateTime('time_start');
             $table->dateTime('time_end');
             $table->tinyInteger('status');

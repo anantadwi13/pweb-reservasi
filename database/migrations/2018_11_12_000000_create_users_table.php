@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('nohp',15);
             $table->string('alamat_jalan');
             $table->unsignedInteger('alamat_kecamatan');
+            $table->unsignedTinyInteger('status');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
